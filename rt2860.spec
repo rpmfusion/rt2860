@@ -2,13 +2,15 @@
 
 Name:		rt2860
 Version:	1.8.0.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
 URL:		http://www.ralinktech.com/ralink/Home/Support/Linux.html
 Source0:	http://www.ralinktech.com.tw/data/drivers/%{SourceName}.tar.bz2
 Source1:	http://www.ralinktech.com.tw/data/drivers/ReleaseNote-RT2860.txt
+# To suspend properly (RPMFusion BZ#199)
+Source2:	suspend.sh
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:	noarch
@@ -34,7 +36,10 @@ echo "Nothing to build."
 %install
 rm -rf $RPM_BUILD_ROOT
 install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA
-install  -p -m 0644 RT2860STA.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
+install -pm 0644 RT2860STA.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
+
+install -dm 755 $RPM_BUILD_ROOT/%{_datadir}/%{name}
+install -pm 0755 %{SOURCE2} $RPM_BUILD_ROOT/%{_datadir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -45,9 +50,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/Wireless
 %dir %{_sysconfdir}/Wireless/RT2860STA
 %config(noreplace) %{_sysconfdir}/Wireless/RT2860STA/RT2860STA.dat
+%{_datadir}/%{name}
 
 %changelog
-* Sat Oct 19 2008 Orcan Ogetbil  <orcanbahri[AT]yahoo[DOT]com> - 1.8.0.0-1
+* Tue Mar 10 2009 Orcan Ogetbil <oget[DOT]fedora[AT]gmail[DOT]com> - 1.8.0.0-2
+- Add suspend script (RPMFusion BZ#199)
+
+* Sat Oct 19 2008 Orcan Ogetbil  <oget[DOT]fedora[AT]gmail[DOT]com> - 1.8.0.0-1
 - Version update (1.8.0.0)
 
 * Thu Oct 02 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.7.0-3
