@@ -2,7 +2,7 @@
 
 Name:		rt2860
 Version:	1.8.0.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
@@ -53,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.8.0.0-3
+- rebuild for new F11 features
+
 * Tue Mar 10 2009 Orcan Ogetbil <oget[DOT]fedora[AT]gmail[DOT]com> - 1.8.0.0-2
 - Add suspend script (RPMFusion BZ#199)
 
