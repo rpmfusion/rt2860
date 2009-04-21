@@ -37,6 +37,8 @@ echo "Nothing to build."
 
 %install
 rm -rf $RPM_BUILD_ROOT
+# buildsys sometimes fails without this:
+sleep 1m
 install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA
 install -pm 0644 RT2860STA.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
 
