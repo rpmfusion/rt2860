@@ -1,3 +1,6 @@
+[2.1.1.0]
+	1. Fixed driver would send zero IWEVASSOCREQIE to Native WpaSupplicant.
+	2. Fixed driver would send non-zero BSSID to Navtive WpaSupplicant when STA disconnecting to AP.
 [2.1.0.0]
 	1. New generation schema for multiple OS porting
 	2. Fixed Ad-hoc ping failed in noisy environment. (Probe Response has too many retry packet then cause "not enough space in MgmtRing")
