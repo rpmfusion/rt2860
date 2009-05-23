@@ -1,3 +1,6 @@
+[2.1.2.0]
+	1. Short GI sampling improvement.
+	2. Support Linux Kernel 2.6.29
 [2.1.1.0]
 	1. Fixed driver would send zero IWEVASSOCREQIE to Native WpaSupplicant.
 	2. Fixed driver would send non-zero BSSID to Navtive WpaSupplicant when STA disconnecting to AP.
