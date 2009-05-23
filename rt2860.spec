@@ -1,11 +1,11 @@
 Name:		rt2860
-Version:	2.1.1.0
+Version:	2.1.2.0
 Release:	1%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
 URL:		http://www.ralinktech.com/ralink/Home/Support/Linux.html
-Source0:	http://www.ralinktech.com.tw/data/drivers/2009_0424_RT2860_Linux_STA_V%{version}.tgz
+Source0:	http://www.ralinktech.com.tw/data/drivers/2009_0521_RT2860_Linux_STA_V%{version}.tgz
 Source1:	http://www.ralinktech.com.tw/data/drivers/ReleaseNote-RT2860.txt
 # To suspend properly (RPMFusion BZ#199)
 Source2:	suspend.sh
@@ -22,7 +22,7 @@ either PCI, PCIe or MiniPCI - that use Ralink chipsets (rt2760, rt2790, rt2860,
 rt2890).
 
 %prep
-%setup -q -n 2009_0424_RT2860_Linux_STA_V%{version}
+%setup -q -n 2009_0521_RT2860_Linux_STA_V%{version}
 iconv -f JOHAB -t UTF8 %{SOURCE1} -o ./ReleaseNotes
 sed -i 's/\r//' ./ReleaseNotes
 touch -r %{SOURCE1} ./ReleaseNotes
@@ -59,11 +59,17 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/Wireless/RT2860STA/RT2860STA*.dat
 
 %changelog
+* Sat May 23 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-1
+- version update (2.1.2.0)
+
 * Sat Apr 24 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.1.0-1
 - version update (2.1.1.0)
 
 * Mon Apr 20 2009 Orcan Ogetbil <oget[DOT]fedora[AT]gmail[DOT]com> - 2.1.0.0-1
 - version update (2.1.0.0)
+
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.8.0.0-3
+- rebuild for new F11 features
 
 * Tue Mar 10 2009 Orcan Ogetbil <oget[DOT]fedora[AT]gmail[DOT]com> - 1.8.0.0-2
 - Add suspend script (RPMFusion BZ#199)
