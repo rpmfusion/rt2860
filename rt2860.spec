@@ -1,6 +1,6 @@
 Name:		rt2860
 Version:	2.1.2.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
@@ -37,7 +37,9 @@ touch -r sta_ate_iwpriv_usage.txt sta_ate_iwpriv_usage.txt.tmp2
 mv -f sta_ate_iwpriv_usage.txt.tmp2 sta_ate_iwpriv_usage.txt
 
 %build
-echo "Nothing to build."
+# Needed for WPA2 support (RFBZ #664)
+sed -i 's|HT_DisallowTKIP=1|HT_DisallowTKIP=0|' RT2860STA.dat
+sleep 1m
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -59,6 +61,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/Wireless/RT2860STA/RT2860STA*.dat
 
 %changelog
+* Wed Jun 17 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-2
+- Modify RT2860STA.dat to support WPA2 (RFBZ #664)
+
 * Sat May 23 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-1
 - version update (2.1.2.0)
 
