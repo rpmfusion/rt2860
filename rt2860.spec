@@ -1,6 +1,6 @@
 Name:		rt2860
 Version:	2.1.2.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
@@ -9,6 +9,7 @@ Source0:	http://www.ralinktech.com.tw/data/drivers/2009_0521_RT2860_Linux_STA_V%
 Source1:	http://www.ralinktech.com.tw/data/drivers/ReleaseNote-RT2860.txt
 # To suspend properly (RPMFusion BZ#199)
 Source2:	suspend.sh
+Source3:	blacklist-rt2800pci.conf
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:	noarch
@@ -49,6 +50,8 @@ install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA
 install -pm 0644 RT2860STA*.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
 
 cp -a %{SOURCE2} .
+install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/modprobe.d/
+cp -a %{SOURCE3} $RPM_BUILD_ROOT/%{_sysconfdir}/modprobe.d/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -59,8 +62,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/Wireless
 %dir %{_sysconfdir}/Wireless/RT2860STA
 %config(noreplace) %{_sysconfdir}/Wireless/RT2860STA/RT2860STA*.dat
+%config(noreplace) %{_sysconfdir}/modprobe.d/blacklist-rt2800pci.conf
 
 %changelog
+* Wed Dec 09 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-3
+- Blacklist kernel's rt2800pci module
+
 * Wed Jun 17 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-2
 - Modify RT2860STA.dat to support WPA2 (RFBZ #664)
 
