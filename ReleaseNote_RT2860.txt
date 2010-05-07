@@ -1,3 +1,10 @@
+[2.3.0.0]
+	1. Support PSP XLINK in ad-hoc mode.
+	2. Support Linux Kernel 2.6.31/2.6.32.
+[2.2.0.0]
+	1. Fixed issue of showing wrong statistics value.
+	2. Fixed problem of showing wrong SNR in wireless extension scan list.
+	3. Support Client WDS.
 [2.1.2.0]
 	1. Short GI sampling improvement.
 	2. Support Linux Kernel 2.6.29
@@ -86,3 +93,4 @@
 	1. Driver security support: Open/Shared WEP, WPA-PSK, WPA2-PSK, WPA-NONE.
 	2. Support 32/64-bit OS
 	3. Support A-MPDU and A-MSDU
+

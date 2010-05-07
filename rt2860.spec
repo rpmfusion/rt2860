@@ -1,14 +1,16 @@
 Name:		rt2860
-Version:	2.1.2.0
-Release:	2%{?dist}
+Version:	2.3.0.0
+Release:	1%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
-URL:		http://www.ralinktech.com/ralink/Home/Support/Linux.html
-Source0:	http://www.ralinktech.com.tw/data/drivers/2009_0521_RT2860_Linux_STA_V%{version}.tgz
-Source1:	http://www.ralinktech.com.tw/data/drivers/ReleaseNote-RT2860.txt
+URL:		http://www.ralinktech.com/support.php?s=2
+# No direct links anymore. See the above URL
+Source0:	2010_01_29_RT2860_Linux_STA_v2.3.0.0.tar.bz2
+Source1:	ReleaseNote_RT2860.txt
 # To suspend properly (RPMFusion BZ#199)
 Source2:	suspend.sh
+Source3:	blacklist-rt2800pci.conf
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:	noarch
@@ -17,20 +19,18 @@ Requires:	%{name}-kmod >= %{version}
 
 %description
 This package contains the documentation and configuration files for the Ralink
-Driver for WiFi, a linux device driver for 802.11a/b/g universal NIC cards -
+Driver for WiFi, a Linux device driver for 802.11a/b/g universal NIC cards -
 either PCI, PCIe or MiniPCI - that use Ralink chipsets (rt2760, rt2790, rt2860,
 rt2890).
 
 %prep
-%setup -q -n 2009_0521_RT2860_Linux_STA_V%{version}
-iconv -f JOHAB -t UTF8 %{SOURCE1} -o ./ReleaseNotes
-sed -i 's/\r//' ./ReleaseNotes
+%setup -q -n 2010_01_29_RT2860_Linux_STA_v2.3.0.0
+
+sed 's/\r//' %{SOURCE1} > ./ReleaseNotes
 touch -r %{SOURCE1} ./ReleaseNotes
 iconv -f JOHAB -t UTF8 README_STA -o README_STA.tmp
-sed 's/\r//' README_STA.tmp > README_STA.tmp2
-touch -r README_STA README_STA.tmp2
-mv -f README_STA.tmp2 README_STA
-chmod -x *iwpriv_usage.txt
+touch -r README_STA README_STA.tmp
+mv -f README_STA.tmp README_STA
 sed 's/\r//' sta_ate_iwpriv_usage.txt > sta_ate_iwpriv_usage.txt.tmp
 iconv -f JOHAB -t UTF8 sta_ate_iwpriv_usage.txt.tmp -o sta_ate_iwpriv_usage.txt.tmp2
 touch -r sta_ate_iwpriv_usage.txt sta_ate_iwpriv_usage.txt.tmp2
@@ -49,6 +49,8 @@ install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA
 install -pm 0644 RT2860STA*.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
 
 cp -a %{SOURCE2} .
+install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/modprobe.d/
+cp -a %{SOURCE3} $RPM_BUILD_ROOT/%{_sysconfdir}/modprobe.d/
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -59,8 +61,15 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/Wireless
 %dir %{_sysconfdir}/Wireless/RT2860STA
 %config(noreplace) %{_sysconfdir}/Wireless/RT2860STA/RT2860STA*.dat
+%config(noreplace) %{_sysconfdir}/modprobe.d/blacklist-rt2800pci.conf
 
 %changelog
+* Thu Apr 22 2010 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.3.0.0-1
+- version update (2.3.0.0)
+
+* Wed Dec 09 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-3
+- Blacklist kernel's rt2800pci module
+
 * Wed Jun 17 2009 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.1.2.0-2
 - Modify RT2860STA.dat to support WPA2 (RFBZ #664)
 
