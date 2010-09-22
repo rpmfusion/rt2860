@@ -1,16 +1,18 @@
 Name:		rt2860
-Version:	2.3.0.0
+Version:	2.4.0.0
 Release:	1%{?dist}
 Summary:	Common files for RaLink 802.11 rt2860 driver
 Group:		System Environment/Kernel
 License:	GPLv2+
 URL:		http://www.ralinktech.com/support.php?s=2
 # No direct links anymore. See the above URL
-Source0:	2010_01_29_RT2860_Linux_STA_v2.3.0.0.tar.bz2
+Source0:	2010_07_16_RT2860_Linux_STA_v2.4.0.0.tar.gz
 Source1:	ReleaseNote_RT2860.txt
 # To suspend properly (RPMFusion BZ#199)
 Source2:	suspend.sh
 Source3:	blacklist-rt2800pci.conf
+# Needed for WPA2 support (RFBZ #664)
+Patch0:		rt2860-allowTKIP.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:	noarch
@@ -24,7 +26,8 @@ either PCI, PCIe or MiniPCI - that use Ralink chipsets (rt2760, rt2790, rt2860,
 rt2890).
 
 %prep
-%setup -q -n 2010_01_29_RT2860_Linux_STA_v2.3.0.0
+%setup -q -n 2010_07_16_RT2860_Linux_STA_v2.4.0.0
+%patch0 -p1
 
 sed 's/\r//' %{SOURCE1} > ./ReleaseNotes
 touch -r %{SOURCE1} ./ReleaseNotes
@@ -35,16 +38,14 @@ sed 's/\r//' sta_ate_iwpriv_usage.txt > sta_ate_iwpriv_usage.txt.tmp
 iconv -f JOHAB -t UTF8 sta_ate_iwpriv_usage.txt.tmp -o sta_ate_iwpriv_usage.txt.tmp2
 touch -r sta_ate_iwpriv_usage.txt sta_ate_iwpriv_usage.txt.tmp2
 mv -f sta_ate_iwpriv_usage.txt.tmp2 sta_ate_iwpriv_usage.txt
+chmod -x  iwpriv_usage.txt
 
 %build
-# Needed for WPA2 support (RFBZ #664)
-sed -i 's|HT_DisallowTKIP=1|HT_DisallowTKIP=0|' RT2860STA.dat
+# buildsys sometimes fails without this:
 sleep 1m
 
 %install
 rm -rf $RPM_BUILD_ROOT
-# buildsys sometimes fails without this:
-sleep 1m
 install -dm 755 $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA
 install -pm 0644 RT2860STA*.dat $RPM_BUILD_ROOT/%{_sysconfdir}/Wireless/RT2860STA/
 
@@ -64,6 +65,9 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/modprobe.d/blacklist-rt2800pci.conf
 
 %changelog
+* Sun Aug 29 2010 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.4.0.0-1
+- version update (2.4.0.0)
+
 * Thu Apr 22 2010 Orcan Ogetbil <oget [DOT] fedora [AT] gmail [DOT] com> - 2.3.0.0-1
 - version update (2.3.0.0)
 
