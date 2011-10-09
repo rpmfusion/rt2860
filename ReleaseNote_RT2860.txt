@@ -1,8 +1,0 @@
-[2.4.0.0]
-
-1. Fix Adhoc issue.
-2. Fix issue: Correct RSSI, SNR, Noise calculation 
-3. Fix issue: STA cannot connect to OPEN-WEP AP if WpaSupplicant set
-4. Add an ATE command for AUTOALC.
-5. Add an ATE command for interpacket GAP.
-6. Add an ATE command for ATE payload pattern.
